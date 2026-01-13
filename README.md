@@ -4,7 +4,7 @@ This repository contains the source code for the **Edu Fairuzullah LMS**, a clou
 
 ## 🚀 Live Deployment
 The application is deployed and hosted on **AWS Elastic Beanstalk**.
-* **Live URL:** [Insert your AWS Link Here, e.g., http://edufairuzullah-lms.ap-southeast-2.elasticbeanstalk.com]
+* **Live URL:** [http://edufairuzullah-lms-env.eba-8bvurr59.ap-southeast-2.elasticbeanstalk.com/login]
 
 ## 📋 Features
 
