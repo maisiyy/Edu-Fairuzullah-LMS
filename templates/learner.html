@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Learner Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">Edu Fairuzullah | Student Portal</span>
+            <div class="d-flex align-items-center">
+                <span class="navbar-text text-white me-3 d-none d-md-block">Welcome, {{ session['username'] }}</span>
+                <a href="/profile" class="btn btn-light btn-sm me-2">Profile</a>
+                <a href="/logout" class="btn btn-outline-light btn-sm">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        
+        <h4 class="mb-3 text-primary border-bottom pb-2">My Active Enrollments</h4>
+        <div class="row mb-5">
+            {% for course in my_courses %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-primary shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ course['title'] }}</h5>
+                        <p class="card-text">{{ course['content'] }}</p>
+                        
+                        <div class="d-grid gap-2 mt-3">
+                            {% if course['resource_filename'] %}
+                                <a href="{{ url_for('uploaded_file', filename=course['resource_filename']) }}" class="btn btn-outline-dark btn-sm">
+                                    📂 Download Materials
+                                </a>
+                            {% endif %}
+                            
+                            {% if course['meeting_link'] %}
+                                <a href="{{ course['meeting_link'] }}" target="_blank" class="btn btn-danger btn-sm">
+                                    🎥 Join Live Class
+                                </a>
+                            {% endif %}
+                            
+                            {% if not course['resource_filename'] and not course['meeting_link'] %}
+                                <button class="btn btn-secondary btn-sm" disabled>No Content Available</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center py-3">
+                <p class="text-muted">You haven't enrolled in any courses yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h4 class="mb-3 text-success border-bottom pb-2">Available Courses</h4>
+        <div class="row">
+            {% for course in available_courses %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm opacity-75">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course['title'] }}</h5>
+                        <p class="card-text text-muted">{{ course['content'] }}</p>
+                        <a href="/enroll/{{ course['id'] }}" class="btn btn-success w-100 mt-2">Enroll Now</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center py-3">
+                <p class="text-muted">No new courses available to join right now.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
